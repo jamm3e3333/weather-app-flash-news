@@ -1,7 +1,7 @@
 .header {
     background: rgba(41, 41, 41, .8);
     width: 100%;
-    padding: 2.4rem 0;
+    padding: 2.4rem 2rem;
     height: 20vh;
     display: flex;
     flex-direction: column;

@@ -1,6 +1,6 @@
 import CardComponent from './UI/Card';
 import CardItemComponent from './UI/CardItem';
-import { ChangeEvent, FormEvent, useState, useRef } from 'react';
+import { ChangeEvent, FormEvent, useState, useRef, useEffect } from 'react';
 import classes from './WeatherForm.module.css';
 
 const url = 'api/weather';
@@ -13,6 +13,8 @@ const WeatherFormComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
 
+    const [geoNotSupported, setGeoNotSupported] = useState(false);
+
     const valueIsValid = city.trim() || false;
     const hasError = !valueIsValid && isTouched;
 
@@ -24,7 +26,7 @@ const WeatherFormComponent = () => {
             setIsError(false);
             setData(undefined);
 
-            const response = await fetch(`${url}/${encodeURI(city)}/metric`);
+            const response = await fetch(url);
             if(response.status !== 200) throw new Error();
 
             const data = await response.json();
@@ -48,7 +50,7 @@ const WeatherFormComponent = () => {
         setCity('');
         setIsTouched(false);
 
-        fetchWeather(url);
+        fetchWeather(`${url}/${encodeURI(city)}/metric`);
     }
 
     function handleInputCity(e: ChangeEvent<HTMLInputElement>) {
@@ -59,6 +61,16 @@ const WeatherFormComponent = () => {
         setIsTouched(true);
     }
 
+    useEffect( () => {
+        if(!navigator.geolocation) {
+            setGeoNotSupported(false);
+        }
+        else {
+            navigator.geolocation.getCurrentPosition(position => {
+                fetchWeather(`${url}/geolocation/${position.coords.longitude}/${position.coords.latitude}`);
+            })
+        }
+    }, [setGeoNotSupported])
     return (
         <div className={classes['form-wrapper']}>
             <CardComponent>
@@ -88,7 +100,7 @@ const WeatherFormComponent = () => {
             <CardComponent>
                 <div className={classes['weather-data--wrapper']}>
                 <CardItemComponent>
-                    <p className={classes['weather-data--name']}>City: </p>
+                    <p className={classes['weather-data--name']}>Location: </p>
                     <p className={classes['weather-data--city']} >{data.city}</p>
                 </CardItemComponent>
                 <CardItemComponent>
@@ -136,7 +148,11 @@ const WeatherFormComponent = () => {
             </CardComponent>}
             {(!isLoading && !isError && !data) && 
             <CardComponent className={classes.welcome}>
-                <h1>Welcome to the weather app</h1>
+                <h1 className={classes['welcome-header']}>Welcome to the weather app</h1>
+                {!geoNotSupported && 
+                <p className={classes['welcome-geo--allow']}>
+                    To see the weather based on your location please, allow acces to your location in your browser and reload the page.
+                </p>}
             </CardComponent>}
         </div>
     )

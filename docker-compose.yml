@@ -17,8 +17,5 @@ services:
         context: ./server
 
     client:
-      build:
-        dockerfile: Dockerfile
-        context: ./client
       depends_on:
         - api

@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+
+    api:
+      command: yarn start
+
+    client:
+      build:
+          dockerfile: Dockerfile.prod
+          context: ./client

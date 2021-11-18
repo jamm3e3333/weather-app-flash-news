@@ -9,6 +9,9 @@ services:
       command: yarn dev
 
     client:
+      build:
+          dockerfile: Dockerfile
+          context: ./client
       stdin_open: true
       volumes:
         - ./client:/src
