@@ -1,23 +1,68 @@
+.welcome {
+    background:rgba(252, 186, 3, .8);
+    border-radius: 0;
+}
 .form-weather {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 8rem;
 }
 
 .form-weather input, button {
-    margin-left: 2rem;
+    margin: 2rem 0;
+    padding: 1rem 2rem;
+    border-radius: .6rem;
+    outline: none;
+    font-size: 1.6rem;
+    border: none;
+}
+
+.form-weather button {
+    background: rgba(252, 186, 3, 1);
+}   
+
+.form-weather button:hover {
+    cursor: pointer;
+}
+
+.form-weather button:active {
+    transform: translateY(.2rem);
 }
 
 .form-weather input {
     width: 30rem;
 }
 
+.weather-data--name {
+    width: 20rem;
+    font-weight: 800;
+}
+
 .weather-data--icon {
-    margin: 0 auto;
+    margin: 0 0 2.5rem 0;
     width: 25%;
 }
 
-.weather-data--image {
-    color: rgba(252, 186, 3, 1);
+@media (max-width: 600px) {
+    .form-weather {
+        flex-direction: column;
+        justify-content: center;
+        gap: none;
+    }
+    .form-weather input {
+        width: 20rem;
+        margin: 2rem 2rem 0 2rem;
+    }
+
+    .form-weather button {
+        margin: 0 2rem 2rem 2rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .weather-data--name {
+        width: 10rem;
+    }
 }

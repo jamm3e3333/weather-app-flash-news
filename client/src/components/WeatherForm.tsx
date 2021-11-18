@@ -1,6 +1,8 @@
 import CardComponent from './UI/Card';
+import CardItemComponent from './UI/CardItem';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import classes from './WeatherForm.module.css';
+
 const url = 'api/weather';
 
 const WeatherFormComponent = () => {
@@ -21,7 +23,6 @@ const WeatherFormComponent = () => {
             setData(undefined);
 
             const response = await fetch(`${url}/${city}/metric`);
-            console.log(response);
             if(response.status !== 200) throw new Error();
 
             const data = await response.json();
@@ -29,14 +30,12 @@ const WeatherFormComponent = () => {
 
             setData(data);
             setIsLoading(false);
-            console.log(data);
-            console.log(data.weather[0].icon)
         }
         catch(e) {
             setIsLoading(false);
             setIsError(true);
             setData(undefined);
-            console.log(e);
+            console.error(e);
         }
     }
 
@@ -60,8 +59,8 @@ const WeatherFormComponent = () => {
     return (
         <>
             <CardComponent>
-                <form className={classes['form-weather']} onSubmit={handleGetWeather}>
-                    <div>
+                <form onSubmit={handleGetWeather}>
+                    <div className={classes['form-weather']}>
                         <input 
                             placeholder="Type city..." 
                             type="text" 
@@ -78,7 +77,8 @@ const WeatherFormComponent = () => {
             {(data && !isLoading && !isError) &&
             <CardComponent>
                 <div className={classes['weather-data--wrapper']}>
-                    <p className={classes['weather-data--description']}>
+                <CardItemComponent>
+                    <p className={classes['weather-data--name']}>
                         {data.weather[0].description}
                     </p>
                     <div className={classes['weather-data--icon']}>
@@ -89,11 +89,27 @@ const WeatherFormComponent = () => {
                             width={100}
                         />
                     </div>
-                    <p>Temperature: {data.temp} °C</p>
-                    <p>Temperature feels like: {data.tempFeels} °C</p>
-                    <p>Humidity: {data.humidity} %</p>
-                    <p>Wind speed: {data.wind} m/s</p>
-                    <p>Clouds: {data.clouds} %</p>
+                </CardItemComponent>
+                <CardItemComponent>
+                    <p className={classes['weather-data--name']}>Temperature:</p>
+                    <p>{data.temp} °C</p>
+                </CardItemComponent>
+                <CardItemComponent>
+                    <p className={classes['weather-data--name']}>Temperature feels like:</p>
+                    <p> {data.tempFeels} °C</p>
+                </CardItemComponent>
+                <CardItemComponent>
+                    <p className={classes['weather-data--name']}>Humidity: </p>
+                    <p>{data.humidity} %</p>
+                </CardItemComponent>
+                <CardItemComponent>
+                    <p className={classes['weather-data--name']}>Wind speed: </p>
+                    <p>{data.wind} m/s</p>
+                </CardItemComponent>
+                <CardItemComponent>
+                    <p className={classes['weather-data--name']}>Clouds: </p>
+                    <p>{data.clouds} %</p>
+                </CardItemComponent>
                 </div>
             </CardComponent>}
             {(isError && !isLoading) && 
@@ -103,6 +119,10 @@ const WeatherFormComponent = () => {
             {(isLoading && !isError) && 
             <CardComponent>
                 <p>Loading...</p>
+            </CardComponent>}
+            {(!isLoading && !isError && !data) && 
+            <CardComponent className={classes.welcome}>
+                <h1>Welcome to the weather app</h1>
             </CardComponent>}
         </>
     )

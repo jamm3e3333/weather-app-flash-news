@@ -1,0 +1,13 @@
+.card-item--wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20rem;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .card-item--wrapper {
+        gap: 5rem;
+    }
+}
