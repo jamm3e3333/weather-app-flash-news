@@ -30,6 +30,7 @@ const WeatherFormComponent = () => {
             setData(data);
             setIsLoading(false);
             console.log(data);
+            console.log(data.weather[0].icon)
         }
         catch(e) {
             setIsLoading(false);
@@ -83,8 +84,9 @@ const WeatherFormComponent = () => {
                     <div className={classes['weather-data--icon']}>
                         <img 
                             className={classes['weather-data--image']} 
-                            src={`../../assets/svg-weather-icons/${data.weather[0].icon}`} 
+                            src={`${process.env.PUBLIC_URL}/assets/svg-weather-icons/${data.weather[0].icon}.svg`}
                             alt={data.weather[0].description} 
+                            width={100}
                         />
                     </div>
                     <p>Temperature: {data.temp} °C</p>

@@ -12,3 +12,12 @@
 .form-weather input {
     width: 30rem;
 }
+
+.weather-data--icon {
+    margin: 0 auto;
+    width: 25%;
+}
+
+.weather-data--image {
+    color: rgba(252, 186, 3, 1);
+}
