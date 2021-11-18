@@ -1,6 +1,6 @@
 import CardComponent from './UI/Card';
 import CardItemComponent from './UI/CardItem';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState, useRef } from 'react';
 import classes from './WeatherForm.module.css';
 
 const url = 'api/weather';
@@ -16,13 +16,15 @@ const WeatherFormComponent = () => {
     const valueIsValid = city.trim() || false;
     const hasError = !valueIsValid && isTouched;
 
+    const cityInputRef = useRef<HTMLInputElement>(null);
+
     async function fetchWeather(url: string) {
         try {
             setIsLoading(true);
             setIsError(false);
             setData(undefined);
 
-            const response = await fetch(`${url}/${city}/metric`);
+            const response = await fetch(`${url}/${encodeURI(city)}/metric`);
             if(response.status !== 200) throw new Error();
 
             const data = await response.json();
@@ -41,7 +43,8 @@ const WeatherFormComponent = () => {
 
     function handleGetWeather(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-
+        if(hasError) return;
+        if(cityInputRef.current) cityInputRef.current.blur();
         setCity('');
         setIsTouched(false);
 
@@ -61,16 +64,23 @@ const WeatherFormComponent = () => {
             <CardComponent>
                 <form onSubmit={handleGetWeather}>
                     <div className={classes['form-weather']}>
+                        <div>
                         <input 
-                            placeholder="Type city..." 
+                            placeholder="Type a city..." 
                             type="text" 
                             maxLength={200}
                             onChange={handleInputCity}
                             onBlur={handleBlurCity}
                             value={city}
                             className={`${hasError ? 'invalid' : ''}`}
+                            ref={cityInputRef}
                         />
-                        <button type="submit">Search weather</button>
+                        {hasError && <p className={classes['invalid-invoice']}>Not a valid city</p>}
+                        </div>
+                        <button 
+                            disabled={hasError || !city || isLoading} 
+                            type="submit">Search weather
+                        </button>
                     </div>
                 </form>
             </CardComponent>
@@ -86,7 +96,7 @@ const WeatherFormComponent = () => {
                             className={classes['weather-data--image']} 
                             src={`${process.env.PUBLIC_URL}/assets/svg-weather-icons/${data.weather[0].icon}.svg`}
                             alt={data.weather[0].description} 
-                            width={100}
+                            width={75}
                         />
                     </div>
                 </CardItemComponent>
@@ -114,7 +124,7 @@ const WeatherFormComponent = () => {
             </CardComponent>}
             {(isError && !isLoading) && 
             <CardComponent>
-                <p>Error while fetching data</p>
+                <p className={classes['error-fetch']}>Error while fetching data</p>
             </CardComponent>}
             {(isLoading && !isError) && 
             <CardComponent>

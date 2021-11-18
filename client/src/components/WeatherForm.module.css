@@ -1,6 +1,6 @@
 .welcome {
     background:rgba(252, 186, 3, .8);
-    border-radius: 0;
+    animation: move-up 1s ease-out;
 }
 .form-weather {
     display: flex;
@@ -45,6 +45,31 @@
     width: 25%;
 }
 
+.invalid-invoice {
+    font-size: 1.2rem;
+    position: absolute;
+    color: rgba(255, 62, 48, 1);
+    transform: translate(.5rem, -2.6rem);
+}
+
+.error-fetch {
+    font-weight: 700;
+    color: rgba(255, 62, 48, 1);
+}
+
+@keyframes move-up {
+    0% {
+        opacity: 0;
+        transform: translateY(10rem);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
 @media (max-width: 600px) {
     .form-weather {
         flex-direction: column;
@@ -55,9 +80,17 @@
         width: 20rem;
         margin: 2rem 2rem 0 2rem;
     }
-
     .form-weather button {
         margin: 0 2rem 2rem 2rem;
+    }
+    .invalid-invoice {
+        position: static;
+        display: block;
+        transform: none;
+        text-align: center;
+    }
+    .error-fetch {
+        text-align: center;
     }
 }
 
