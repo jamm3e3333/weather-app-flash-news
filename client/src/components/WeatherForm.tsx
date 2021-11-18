@@ -60,7 +60,7 @@ const WeatherFormComponent = () => {
     }
 
     return (
-        <>
+        <div className={classes['form-wrapper']}>
             <CardComponent>
                 <form onSubmit={handleGetWeather}>
                     <div className={classes['form-weather']}>
@@ -87,6 +87,10 @@ const WeatherFormComponent = () => {
             {(data && !isLoading && !isError) &&
             <CardComponent>
                 <div className={classes['weather-data--wrapper']}>
+                <CardItemComponent>
+                    <p className={classes['weather-data--name']}>City: </p>
+                    <p className={classes['weather-data--city']} >{data.city}</p>
+                </CardItemComponent>
                 <CardItemComponent>
                     <p className={classes['weather-data--name']}>
                         {data.weather[0].description}
@@ -134,7 +138,7 @@ const WeatherFormComponent = () => {
             <CardComponent className={classes.welcome}>
                 <h1>Welcome to the weather app</h1>
             </CardComponent>}
-        </>
+        </div>
     )
 }
 

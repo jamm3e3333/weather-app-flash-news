@@ -1,3 +1,7 @@
+.form-wrapper {
+    padding: 1.2rem;
+}
+
 .welcome {
     background:rgba(252, 186, 3, .8);
     animation: move-up 1s ease-out;
@@ -40,8 +44,13 @@
     font-weight: 800;
 }
 
+.weather-data--city {
+    letter-spacing: 1.1rem;
+    text-transform: uppercase;
+}
+
 .weather-data--icon {
-    margin: 0 0 2.5rem 0;
+    margin: 2.5rem 0;
     width: 25%;
 }
 
@@ -49,7 +58,7 @@
     font-size: 1.2rem;
     position: absolute;
     color: rgba(255, 62, 48, 1);
-    transform: translate(.5rem, -2.6rem);
+    transform: translate(.5rem, -2rem);
 }
 
 .error-fetch {
@@ -74,7 +83,7 @@
     .form-weather {
         flex-direction: column;
         justify-content: center;
-        gap: none;
+        gap: 2rem;
     }
     .form-weather input {
         width: 20rem;

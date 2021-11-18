@@ -1,0 +1,21 @@
+.header {
+    background: rgba(41, 41, 41, .8);
+    width: 100%;
+    padding: 2.4rem 0;
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.header-items {
+    text-align: center;
+    margin: 0 auto;
+    color: rgba(224, 224, 224, 1);
+}
+
+@media (max-widht: 600px) {
+    .header {
+        clip-path:none;
+    }
+}

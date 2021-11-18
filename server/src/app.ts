@@ -1,5 +1,6 @@
 import express from 'express';
 import { send } from 'process';
+import getGeolocation from './utils/getGeolocation';
 import getWeather from './utils/getWeather';
 
 const app = express();
@@ -16,12 +17,14 @@ app.get('/weather/:city/:units', async (req, res) => {
     const city = req.params.city;
 
     try {
-        const data = await getWeather(city, units);
-
-        if(data === 'Error') throw new Error();
-
-        res.status(200)
-            .send(data);
+        await getWeather(city, units, (error, data) => {
+            if(error) {
+                return res.status(400)
+                            .send();
+            }
+            res.status(200)
+                .send(data);
+        });
     }
     catch(e) {
         res.status(400)
@@ -29,22 +32,20 @@ app.get('/weather/:city/:units', async (req, res) => {
     }
 });
 
-app.get('/weather/geo/:units', async (req, res) => {
-    const lat = req.query.lat?.toString();
-    const long = req.query.long?.toString();
+app.get('/weather/geolocation/:long/:lat', async (req, res) => {
+    const lat = req.params.lat;
+    const long = req.params.long;
+    if(!lat || !long) return res.status(400).send();
 
-    const units = req.params.units === 'standard' ? '' : req.params.units;
-
-    try {
-        if(!lat || !long) {
-            return res.status(400)
-                        .send();
-        }
-
-        const data = await getWeather('', units, lat, long);
-        if(data === 'Error') throw new Error();
-        res.status(200)
-            .send(data);
+    try{
+        await getGeolocation(long,lat, (error, data) => {
+            if(error) {
+                return res.status(400)
+                            .send();
+            }
+            res.status(200)
+                .send(data);
+        });
     }
     catch(e) {
         res.status(400)

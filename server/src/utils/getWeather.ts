@@ -2,15 +2,12 @@ import request from 'axios';
 
 const apiKey = process.env.WEATHER_API;
 
-async function getWeather (city: string, units: string, lat?: string, long?: string) {
-    let url = '';
+interface GeoCB {
+    (error: string | undefined, data: any | undefined): void;
+}
 
-    if(lat && long) {
-        url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}units=${units}`;
-    }
-    else {
-        url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
-    }
+async function getWeather (city: string, units: string, cb: GeoCB) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
     
     try{
         const response = await request({
@@ -20,8 +17,7 @@ async function getWeather (city: string, units: string, lat?: string, long?: str
                 'Content-Type': 'application/json',
             },
         });
-        if(response.status !== 200 || !Object.keys(response.data).length) throw new Error('Error while fetching data.');
-        
+        if(response.status !== 200 || !Object.keys(response.data).length) throw new Error();
         const data = {
             weather: response.data.weather,
             temp: response.data.main.temp,
@@ -31,12 +27,14 @@ async function getWeather (city: string, units: string, lat?: string, long?: str
             visibility: response.data.visibility,
             wind: response.data.wind.speed,
             clouds: response.data.clouds.all,
+            city: response.data.name,
         }
 
-        return data;
+        return cb(undefined,data);
     }
     catch(e) {
-        return 'Error';
+        console.error(e);
+        return cb('error', undefined);
     }
 }
 

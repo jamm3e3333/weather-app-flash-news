@@ -1,8 +1,11 @@
-import WeatherFormComponent from "./components/WeatherForm";
+import WeatherFormComponent from './components/WeatherForm';
+import HeaderComponent from './components/Header';
+
 
 function App() {
   return (
     <>
+      <HeaderComponent />
       <WeatherFormComponent />
     </>
   );

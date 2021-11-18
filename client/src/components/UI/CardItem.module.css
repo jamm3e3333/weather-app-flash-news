@@ -11,3 +11,10 @@
         gap: 5rem;
     }
 }
+
+@media (max-width: 500px) {
+    .card-item--wrapper {
+        justify-content: space-between;
+        gap: 0;
+    }
+}
