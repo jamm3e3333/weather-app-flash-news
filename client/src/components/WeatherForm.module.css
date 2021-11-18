@@ -1,4 +1,14 @@
-.invalid {
-    border: solid rgba(255, 62, 48, 1) 1px;
-    color: rgba(255, 62, 48, 1);
+.form-weather {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-weather input, button {
+    margin-left: 2rem;
+}
+
+.form-weather input {
+    width: 30rem;
 }

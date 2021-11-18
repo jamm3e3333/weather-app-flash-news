@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+
+    api:
+      volumes:
+        - ./server:/src
+        - /src/node_modules
+      command: yarn dev
+
+    client:
+      stdin_open: true
+      volumes:
+        - ./client:/src
+        - /src/node_modules
+      command: yarn start

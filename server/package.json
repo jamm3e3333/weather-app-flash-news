@@ -17,6 +17,7 @@
     "express": "^4.17.1"
   },
   "scripts": {
-    "dev": "env-cmd -f ./config/dev.env nodemon --config nodemons.json index.ts"
+    "dev": "env-cmd -f ./config/dev.env nodemon --config nodemons.json index.ts",
+    "start": "env-cmd -f ./config/dev.env node index.ts"
   }
 }
